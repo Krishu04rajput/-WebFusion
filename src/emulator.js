@@ -38,8 +38,12 @@ cdrom: {
 },
 
 autostart: true
+            emulator.add_listener("emulator-ready", function () {
+    console.log("🟢 WebFusion VM is ready!");
+    status.textContent = "🟢 Virtual machine is running";
+});
 
-        });
+    
 
         screenText.style.display = "none";
 
