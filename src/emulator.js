@@ -6,7 +6,7 @@ function loadV86() {
 
     return new Promise((resolve, reject) => {
 
-        if (window.V86Starter) {
+        if (window.V86) {
             resolve();
             return;
         }
@@ -50,7 +50,7 @@ async function startEmulator() {
 
         status.textContent = "🧠 Starting virtual CPU...";
 
-        emulator = new V86Starter({
+        emulator = new V86({
 
             wasm_path:
                 "vendor/v86/build/v86.wasm",
