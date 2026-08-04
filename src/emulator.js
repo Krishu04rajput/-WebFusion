@@ -34,7 +34,7 @@ function startEmulator() {
 },
 
 cdrom: {
-    url: "https://i.copy.sh/linux.iso"
+    url: "vendor/v86/images/linux.iso"
 },
 
 autostart: true
