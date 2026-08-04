@@ -68,7 +68,9 @@ autostart: true
 
 
 function startAndroid() {
+    console.log("🤖 Android button clicked");
     startEmulator();
+}
 }
 
 
