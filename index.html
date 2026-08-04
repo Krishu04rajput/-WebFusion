@@ -1,65 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>WebFusion</title>
+<title>WebFusion</title>
 
-    <style>
-        body {
-            margin: 0;
-            background: #080808;
-            color: white;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
+<style>
+    * {
+        box-sizing: border-box;
+    }
 
-        .box {
-            padding: 40px;
-            border: 1px solid #333;
-            border-radius: 20px;
-        }
+    body {
+        margin: 0;
+        background: #080808;
+        color: white;
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-        h1 {
-            font-size: 45px;
-        }
+    .container {
+        width: 95%;
+        max-width: 1100px;
+        text-align: center;
+    }
 
-        p {
-            color: #aaa;
-        }
+    h1 {
+        font-size: 45px;
+        margin-bottom: 5px;
+    }
 
-        button {
-            padding: 14px 25px;
-            margin: 10px;
-            border: none;
-            border-radius: 10px;
-            background: white;
-            color: black;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    .subtitle {
+        color: #888;
+        margin-bottom: 30px;
+    }
 
-        button:hover {
-            transform: scale(1.05);
-        }
-    </style>
+    .screen {
+        background: #111;
+        border: 2px solid #333;
+        border-radius: 18px;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        box-shadow: 0 0 40px rgba(255,255,255,0.05);
+    }
+
+    .screen-content {
+        color: #777;
+    }
+
+    .buttons {
+        margin-top: 20px;
+    }
+
+    button {
+        padding: 14px 25px;
+        margin: 6px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    #status {
+        margin-top: 15px;
+        color: #aaa;
+    }
+</style>
 </head>
 
 <body>
 
-    <div class="box">
-        <h1>⚡ WebFusion</h1>
+<div class="container">
 
-        <p>Browser-based OS Emulator</p>
+    <h1>⚡ WebFusion</h1>
 
-        <button>🤖 Android</button>
-        <button>🪟 Windows</button>
+    <div class="subtitle">
+        Browser OS Emulator
     </div>
+
+    <div class="screen">
+
+        <div class="screen-content" id="screenText">
+            🖥️ Emulator is waiting...
+        </div>
+
+    </div>
+
+    <div class="buttons">
+
+        <button onclick="startAndroid()">
+            🤖 Start Android
+        </button>
+
+        <button onclick="startWindows()">
+            🪟 Start Windows
+        </button>
+
+    </div>
+
+    <div id="status">
+        Select an operating system
+    </div>
+
+</div>
+
+
+<script>
+
+function startAndroid() {
+
+    document.getElementById("screenText").innerHTML =
+        "🤖 Android Emulator Starting...";
+
+    document.getElementById("status").innerHTML =
+        "Android selected";
+
+}
+
+function startWindows() {
+
+    document.getElementById("screenText").innerHTML =
+        "🪟 Windows Emulator Starting...";
+
+    document.getElementById("status").innerHTML =
+        "Windows selected";
+
+}
+
+</script>
 
 </body>
 </html>
