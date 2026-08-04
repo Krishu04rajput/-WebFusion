@@ -22,7 +22,15 @@ jobs:
           mkdir -p vendor/v86
           mkdir -p vendor/v86/bios
 
-      - name: Download official v86 release
+          - name: Download Linux test image
+        run: |
+          mkdir -p vendor/v86/images
+
+          curl -fL \
+            https://i.copy.sh/linux.iso \
+            -o vendor/v86/images/linux.iso
+
+          ls -lh vendor/v86/images/linux.iso
         run: |
           curl -fL \
             https://github.com/copy/v86/releases/download/latest/libv86.js \
