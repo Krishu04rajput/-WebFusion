@@ -23,9 +23,10 @@
     }
 
     .container {
-        width: 95%;
-        max-width: 1100px;
-        text-align: center;
+    width: min(1100px, 94vw);
+    text-align: center;
+    margin: auto;
+}
     }
 
     h1 {
@@ -51,7 +52,41 @@
 
         box-shadow: 0 0 40px rgba(255,255,255,0.05);
     }
+@media (max-width: 700px) {
 
+    body {
+        min-height: 100dvh;
+        padding: 20px 0;
+        align-items: flex-start;
+    }
+
+    .container {
+        width: 94vw;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+    .subtitle {
+        margin-bottom: 18px;
+    }
+
+    .screen {
+        aspect-ratio: 16 / 10;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    button {
+        width: 100%;
+        margin: 0;
+    }
+}
     .screen-content {
         color: #777;
     }
