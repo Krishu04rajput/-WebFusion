@@ -2,94 +2,51 @@
 
 let emulator = null;
 
-function loadV86() {
-
-    return new Promise((resolve, reject) => {
-
-        if (window.V86) {
-            resolve();
-            return;
-        }
-
-        const script = document.createElement("script");
-
-        script.src = "vendor/v86/build/libv86.js";
-
-        script.onload = () => {
-            console.log("🔥 v86 loaded from WebFusion!");
-            resolve();
-        };
-
-        script.onerror = () => {
-            reject(
-                new Error("v86 engine could not be loaded.")
-            );
-        };
-
-        document.head.appendChild(script);
-    });
-}
-
-
-async function startEmulator() {
+function startEmulator() {
 
     const screen = document.getElementById("screen_container");
     const screenText = document.getElementById("screenText");
     const status = document.getElementById("status");
 
-    screenText.textContent = "⚙️ Loading v86...";
+    screenText.textContent = "🧠 Starting virtual machine...";
     screenText.style.display = "block";
 
-    status.textContent = "Loading virtual machine...";
+    status.textContent = "Loading WebFusion emulator...";
 
     try {
 
-        await loadV86();
-
-        screenText.style.display = "none";
-
-        status.textContent = "🧠 Starting virtual CPU...";
-
         emulator = new V86({
 
-            wasm_path:
-                "vendor/v86/build/v86.wasm",
+            wasm_path: "vendor/v86/v86.wasm",
 
-            memory_size:
-                32 * 1024 * 1024,
+            memory_size: 32 * 1024 * 1024,
 
-            vga_memory_size:
-                2 * 1024 * 1024,
+            vga_memory_size: 2 * 1024 * 1024,
 
-            screen_container:
-                screen,
+            screen_container: screen,
 
             bios: {
-                url:
-                    "vendor/v86/bios/seabios.bin"
+                url: "vendor/v86/bios/seabios.bin"
             },
 
             vga_bios: {
-                url:
-                    "vendor/v86/bios/vgabios.bin"
+                url: "vendor/v86/bios/vgabios.bin"
             },
 
             autostart: true
+
         });
+
+        screenText.style.display = "none";
 
         status.textContent =
             "🟢 Virtual machine started!";
 
-        console.log(
-            "🚀 WebFusion virtual machine is running!"
-        );
+        console.log("🔥 WebFusion VM started!");
 
     } catch (error) {
 
-        console.error(
-            "WebFusion emulator error:",
-            error
-        );
+        console.error(error);
 
         screenText.style.display = "block";
 
@@ -102,15 +59,11 @@ async function startEmulator() {
 }
 
 
-async function startAndroid() {
-
-    await startEmulator();
-
+function startAndroid() {
+    startEmulator();
 }
 
 
-async function startWindows() {
-
-    await startEmulator();
-
+function startWindows() {
+    startEmulator();
 }
