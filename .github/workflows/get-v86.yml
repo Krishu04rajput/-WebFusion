@@ -17,36 +17,43 @@ jobs:
       - name: Checkout WebFusion
         uses: actions/checkout@v4
 
-      - name: Create v86 folders
+      - name: Prepare folders
         run: |
-          mkdir -p vendor/v86/build
+          mkdir -p vendor/v86
           mkdir -p vendor/v86/bios
 
-      - name: Download v86 JavaScript engine
+      - name: Download official v86 release
         run: |
-          curl -L \
-            https://raw.githubusercontent.com/copy/v86/master/build/libv86.js \
-            -o vendor/v86/build/libv86.js
+          curl -fL \
+            https://github.com/copy/v86/releases/download/latest/libv86.js \
+            -o vendor/v86/libv86.js
 
-      - name: Download v86 WebAssembly engine
+          curl -fL \
+            https://github.com/copy/v86/releases/download/latest/v86.wasm \
+            -o vendor/v86/v86.wasm
+
+      - name: Download official BIOS files
         run: |
-          curl -L \
-            https://raw.githubusercontent.com/copy/v86/master/build/v86.wasm \
-            -o vendor/v86/build/v86.wasm
+          curl -fL \
+            https://github.com/copy/v86/archive/refs/tags/latest.tar.gz \
+            -o v86.tar.gz
 
-      - name: Download SeaBIOS
+          tar -xzf v86.tar.gz
+
+          cp v86-latest/bios/seabios.bin \
+             vendor/v86/bios/seabios.bin
+
+          cp v86-latest/bios/vgabios.bin \
+             vendor/v86/bios/vgabios.bin
+
+          rm -rf v86-latest v86.tar.gz
+
+      - name: Verify files
         run: |
-          curl -L \
-            https://raw.githubusercontent.com/copy/v86/master/bios/seabios.bin \
-            -o vendor/v86/bios/seabios.bin
+          ls -lh vendor/v86
+          ls -lh vendor/v86/bios
 
-      - name: Download VGA BIOS
-        run: |
-          curl -L \
-            https://raw.githubusercontent.com/copy/v86/master/bios/vgabios.bin \
-            -o vendor/v86/bios/vgabios.bin
-
-      - name: Commit v86 engine
+      - name: Commit engine
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -54,6 +61,6 @@ jobs:
           git add vendor/v86
 
           git diff --cached --quiet || \
-          git commit -m "Add v86 emulator engine"
+          git commit -m "Use official v86 release"
 
           git push
