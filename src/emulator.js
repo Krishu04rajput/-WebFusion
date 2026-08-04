@@ -3,9 +3,9 @@
 let emulator = null;
 
 function loadV86() {
+
     return new Promise((resolve, reject) => {
 
-        // Don't load it twice
         if (window.V86) {
             resolve();
             return;
@@ -13,16 +13,17 @@ function loadV86() {
 
         const script = document.createElement("script");
 
-        script.src =
-            "https://raw.githubusercontent.com/copy/v86/master/build/libv86.js";
+        script.src = "vendor/v86/build/libv86.js";
 
         script.onload = () => {
-            console.log("🔥 v86 loaded!");
+            console.log("🔥 v86 loaded from WebFusion!");
             resolve();
         };
 
         script.onerror = () => {
-            reject(new Error("Could not load v86."));
+            reject(
+                new Error("v86 engine could not be loaded.")
+            );
         };
 
         document.head.appendChild(script);
@@ -36,8 +37,10 @@ async function startEmulator() {
     const screenText = document.getElementById("screenText");
     const status = document.getElementById("status");
 
-    screenText.textContent = "⚙️ Loading emulator...";
-    status.textContent = "Loading v86...";
+    screenText.textContent = "⚙️ Loading v86...";
+    screenText.style.display = "block";
+
+    status.textContent = "Loading virtual machine...";
 
     try {
 
@@ -45,15 +48,15 @@ async function startEmulator() {
 
         screenText.style.display = "none";
 
-        status.textContent = "🧠 Starting virtual machine...";
+        status.textContent = "🧠 Starting virtual CPU...";
 
         emulator = new V86({
 
             wasm_path:
-                "https://raw.githubusercontent.com/copy/v86/master/build/v86.wasm",
+                "vendor/v86/build/v86.wasm",
 
             memory_size:
-                64 * 1024 * 1024,
+                32 * 1024 * 1024,
 
             vga_memory_size:
                 2 * 1024 * 1024,
@@ -63,31 +66,35 @@ async function startEmulator() {
 
             bios: {
                 url:
-                    "https://raw.githubusercontent.com/copy/v86/master/bios/seabios.bin"
+                    "vendor/v86/bios/seabios.bin"
             },
 
             vga_bios: {
                 url:
-                    "https://raw.githubusercontent.com/copy/v86/master/bios/vgabios.bin"
+                    "vendor/v86/bios/vgabios.bin"
             },
 
             autostart: true
-
         });
 
         status.textContent =
-            "🟢 Virtual machine started — waiting for boot media.";
+            "🟢 Virtual machine started!";
 
-        console.log("🚀 WebFusion VM started!");
+        console.log(
+            "🚀 WebFusion virtual machine is running!"
+        );
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "WebFusion emulator error:",
+            error
+        );
 
         screenText.style.display = "block";
 
         screenText.textContent =
-            "❌ Emulator failed to load.";
+            "❌ Emulator failed to start.";
 
         status.textContent =
             error.message;
