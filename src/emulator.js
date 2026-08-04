@@ -30,10 +30,14 @@ function startEmulator() {
             },
 
             vga_bios: {
-                url: "vendor/v86/bios/vgabios.bin"
-            },
+    url: "vendor/v86/bios/vgabios.bin"
+},
 
-            autostart: true
+cdrom: {
+    url: "https://i.copy.sh/linux.iso"
+},
+
+autostart: true
 
         });
 
