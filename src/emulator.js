@@ -2,132 +2,160 @@
 
 let emulator = null;
 
+function log(message) {
+    const status = document.getElementById("status");
+    const screenText = document.getElementById("screenText");
+
+    console.log("[WebFusion]", message);
+
+    if (status) {
+        status.textContent = message;
+    }
+
+    if (screenText) {
+        screenText.textContent = message;
+    }
+}
+
 function startEmulator() {
-    const screenContainer =
+
+    const screen =
         document.getElementById("screen_container");
 
     const screenText =
         document.getElementById("screenText");
 
-    const status =
-        document.getElementById("status");
-
-    // Prevent starting multiple VMs
     if (emulator) {
-        status.textContent = "🟢 WebFusion VM is already running.";
+        log("🟢 VM is already running");
         return;
     }
 
-    console.log("🚀 Starting WebFusion VM...");
+    log("1/5 🔍 Checking v86...");
 
-    screenText.textContent =
-        "⚙️ Loading virtual machine...";
+    if (typeof V86 === "undefined") {
 
-    screenText.style.display = "block";
+        log("❌ V86 is NOT loaded!");
 
-    status.textContent =
-        "🧠 Starting v86...";
+        console.error(
+            "V86 library is missing."
+        );
+
+        return;
+    }
+
+    log("2/5 ✅ V86 loaded!");
+
+    log("3/5 🧠 Creating virtual machine...");
 
     try {
 
         emulator = new V86({
 
-            // WebAssembly CPU engine
             wasm_path:
                 "vendor/v86/v86.wasm",
 
-            // Virtual RAM
             memory_size:
                 32 * 1024 * 1024,
 
-            // Virtual graphics memory
             vga_memory_size:
                 2 * 1024 * 1024,
 
-            // Virtual display
             screen_container:
-                screenContainer,
+                screen,
 
-            // BIOS
             bios: {
                 url:
                     "vendor/v86/bios/seabios.bin"
             },
 
-            // VGA BIOS
             vga_bios: {
                 url:
                     "vendor/v86/bios/vgabios.bin"
             },
 
-            // First test operating system
             cdrom: {
                 url:
                     "vendor/v86/images/linux.iso"
             },
 
-            // Start automatically
             autostart: true
         });
 
-        console.log("✅ V86 object created!");
+        log("4/5 🚀 VM created!");
 
-        status.textContent =
-            "🟢 Virtual machine started!";
-
-        screenText.textContent =
-            "🐧 Booting Linux...";
-
-        // Tell us when the emulator is ready
         emulator.add_listener(
             "emulator-ready",
             function () {
 
                 console.log(
-                    "🟢 WebFusion emulator is ready!"
+                    "[WebFusion] Emulator ready!"
                 );
 
-                status.textContent =
-                    "🟢 VM running";
+                log(
+                    "5/5 🟢 VM READY — booting OS..."
+                );
+            }
+        );
+
+        emulator.add_listener(
+            "emulator-started",
+            function () {
+
+                console.log(
+                    "[WebFusion] Emulator started!"
+                );
+
+                log(
+                    "🟢 CPU STARTED — booting..."
+                );
+            }
+        );
+
+        emulator.add_listener(
+            "emulator-stopped",
+            function () {
+
+                console.log(
+                    "[WebFusion] Emulator stopped."
+                );
+
+                log(
+                    "🟡 VM stopped."
+                );
             }
         );
 
     } catch (error) {
 
         console.error(
-            "❌ WebFusion emulator error:",
+            "[WebFusion] VM ERROR:",
             error
         );
 
         emulator = null;
 
-        screenText.style.display = "block";
-
-        screenText.textContent =
-            "❌ Emulator failed.";
-
-        status.textContent =
-            "Error: " + error.message;
+        log(
+            "❌ VM ERROR: " +
+            error.message
+        );
     }
 }
 
 
-// Android button
 function startAndroid() {
 
     console.log(
-        "🤖 Android button clicked"
+        "[WebFusion] Android clicked"
     );
 
     startEmulator();
 }
 
 
-// Windows button
 function startWindows() {
 
     console.log(
-        "🪟 Windows button clicked"
+        "[WebFusion] Windows clicked"
     );
 
     startEmulator();
