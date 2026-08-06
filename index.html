@@ -17,7 +17,6 @@
             background: #080808;
             color: white;
             font-family: Arial, sans-serif;
-
             min-height: 100vh;
             min-height: 100dvh;
 
@@ -44,8 +43,6 @@
             margin-bottom: 30px;
         }
 
-        /* Emulator display */
-
         .screen {
             background: #111;
             border: 2px solid #333;
@@ -60,7 +57,7 @@
 
             overflow: hidden;
 
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 40px rgba(255,255,255,0.05);
         }
 
         #screen_container {
@@ -82,8 +79,6 @@
             font-size: 18px;
         }
 
-        /* Buttons */
-
         .buttons {
             margin-top: 20px;
 
@@ -94,12 +89,10 @@
 
         button {
             padding: 14px 25px;
-
             border: none;
             border-radius: 10px;
 
             font-size: 16px;
-
             cursor: pointer;
 
             transition: transform 0.15s ease;
@@ -117,8 +110,6 @@
             margin-top: 15px;
             color: #aaa;
         }
-
-        /* iPad / Mobile */
 
         @media (max-width: 700px) {
 
@@ -162,88 +153,113 @@
 
 <body>
 
-    <div class="container">
+<div class="container">
 
-        <h1>⚡ WebFusion</h1>
+    <h1>⚡ WebFusion</h1>
 
-        <div class="subtitle">
-            Browser OS Emulator
-        </div>
+    <div class="subtitle">
+        Browser OS Emulator
+    </div>
 
 
-        <!-- EMULATOR SCREEN -->
+    <div class="screen">
 
-        <div class="screen">
+        <div id="screen_container">
 
-            <div id="screen_container">
-
-                <div
-                    id="screenText"
-                    class="screen-content">
-                    🖥️ Emulator is waiting...
-                </div>
-
-                <canvas style="display: none;"></canvas>
-
+            <div
+                id="screenText"
+                class="screen-content">
+                🖥️ Emulator is waiting...
             </div>
 
-        </div>
-
-
-        <!-- OS BUTTONS -->
-
-        <div class="buttons">
-
-            <button onclick="startAndroid()">
-                🤖 Start Android
-            </button>
-
-            <button onclick="startWindows()">
-                🪟 Start Windows
-            </button>
-
-        </div>
-
-
-        <div id="status">
-            Select an operating system
         </div>
 
     </div>
 
 
-    <!-- WebFusion JavaScript -->
+    <div class="buttons">
 
-    <script>
+        <button id="androidButton">
+            🤖 Start Android
+        </button>
 
-        function startAndroid() {
+        <button id="windowsButton">
+            🪟 Start Windows
+        </button>
 
-            document.getElementById("screenText").innerHTML =
-                "🤖 Android Emulator Starting...";
-
-            document.getElementById("status").innerHTML =
-                "Android selected";
-
-        }
+    </div>
 
 
-        function startWindows() {
+    <div id="status">
+        Select an operating system
+    </div>
 
-            document.getElementById("screenText").innerHTML =
-                "🪟 Windows Emulator Starting...";
-
-            document.getElementById("status").innerHTML =
-                "Windows Emulator Starting...";
-
-        }
-
-    </script>
+</div>
 
 
-    <!-- Our emulator core -->
+<!-- v86 -->
 
- <script src="vendor/v86/libv86.js"></script>
-<script src="src/emulator.js"></script>
+<script src="vendor/v86/libv86.js"></script>
+
+<!-- WebFusion -->
+
+<script src="src/emulator.js?v=3"></script>
+
+
+<script>
+
+    /*
+     * WebFusion button wiring
+     *
+     * We intentionally DON'T define
+     * startAndroid() / startWindows()
+     * here anymore.
+     */
+
+    document
+        .getElementById("androidButton")
+        .addEventListener("click", function () {
+
+            console.log("🤖 Android button clicked");
+
+            if (typeof startAndroid === "function") {
+
+                startAndroid();
+
+            } else {
+
+                document.getElementById("screenText").textContent =
+                    "❌ emulator.js did not load";
+
+                document.getElementById("status").textContent =
+                    "JavaScript connection failed";
+            }
+
+        });
+
+
+    document
+        .getElementById("windowsButton")
+        .addEventListener("click", function () {
+
+            console.log("🪟 Windows button clicked");
+
+            if (typeof startWindows === "function") {
+
+                startWindows();
+
+            } else {
+
+                document.getElementById("screenText").textContent =
+                    "❌ emulator.js did not load";
+
+                document.getElementById("status").textContent =
+                    "JavaScript connection failed";
+            }
+
+        });
+
+</script>
 
 </body>
 
